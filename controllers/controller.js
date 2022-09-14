@@ -94,6 +94,44 @@ class listController {
       next(err);
     }
   }
+
+  static async checkData(req, res, next) {
+    try {
+      const { inputNik, inputName, inputPlace, inputDateBirth } = req.body;
+
+      let messageBlacklist = {
+        message: "Blacklist",
+      };
+
+      const dataNik = await List.findAll({
+        where: {
+          nik: inputNik,
+        },
+      });
+
+      if (data) {
+        res.status(200).json(messageBlacklist);
+      }
+
+      const dataName = await List.findAll({
+        where: {
+          fullName: inputName,
+          place: inputPlace,
+          dateBirth: inputDateBirth,
+        },
+      });
+
+      if (dataName) {
+        res.status(200).json(messageBlacklist);
+      }
+
+      res.status(200).json({
+        message: "Data yang anda cari tidak ada",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = listController;
